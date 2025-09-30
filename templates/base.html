@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Mon site{% endblock %}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
+
+        body {
+            min-height:100vh;
+            width:100%;
+            background:#f0f0f0;
+        }
+
+        header {
+            background:#009579;
+            padding:10px 20px;
+            text-align:right;
+            color:#fff;
+        }
+
+        header a {
+            color:#fff;
+            text-decoration:none;
+            margin-left:10px;
+        }
+
+        header a:hover {
+            text-decoration:underline;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background:#fff;
+            padding:30px;
+            border-radius:7px;
+            box-shadow:0 5px 10px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        {% if request.user.is_authenticated %}
+            Bonjour {{ request.user.username }} |
+            <a href="{% url 'deconnexion' %}">Déconnexion</a>
+        {% endif %}
+    </header>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <script>
+        // Déconnexion automatique à la fermeture de l'onglet
+        window.addEventListener('beforeunload', function (e) {
+            navigator.sendBeacon("{% url 'deconnexion' %}");
+        });
+    </script>
+</body>
+</html>

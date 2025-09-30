@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Messages{% endblock %}
+
+{% block content %}
+<h2>Messages</h2>
+
+{% for msg in page_obj %}
+    <div class="message">
+        <strong>{{ msg.auteur.username }}</strong> - {{ msg.date_creation|date:"d/m/Y H:i" }}<br>
+        {{ msg.contenu }}
+    </div>
+{% empty %}
+    <p>Aucun message pour l’instant.</p>
+{% endfor %}
+
+<div class="pagination">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">Précédent</a>
+    {% endif %}
+    <span>Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Suivant</a>
+    {% endif %}
+</div>
+
+<a href="{% url 'ajouter' %}" class="btn">Poster un nouveau message</a>
+{% endblock %}
